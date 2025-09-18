@@ -6,43 +6,47 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
       :root {
-        --primary-color: #2c3e50; /* Deep Blue */
-        --secondary-color: #27ae60; /* Green */
-        --accent-color: #3498db; /* Bright Blue */
-        --light-color: #ffffff; /* White */
-        --text-color: #333;
-        --bg-color: #ecf0f1; /* Light Grey */
+        --primary: #0ff; /* Neon cyan */
+        --secondary: #0f0; /* Neon green */
+        --accent: #fff;
+        --bg-dark: #0a0a0a;
+        --card-shadow: rgba(0, 255, 255, 0.3);
+        --glow: rgba(0, 255, 255, 0.7);
       }
 
       html,
       body {
         margin: 0;
         padding: 0;
+        font-family: 'Orbitron', sans-serif;
+        background: #0a0a0a;
+        overflow-x: hidden;
+        color: #fff;
+      }
+
+      /* Animated gradient background */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-color);
+        background: linear-gradient(270deg, #0ff, #0f0, #fff, #0ff);
+        background-size: 600% 600%;
+        animation: gradientShift 20s ease infinite;
+        z-index: -1;
       }
 
-      /* Animations */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        50% {
+          background-position: 100% 50%;
         }
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateX(-100%);
-        }
-        to {
-          transform: translateX(0);
+        100% {
+          background-position: 0% 50%;
         }
       }
 
@@ -50,177 +54,115 @@
       .navbar {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        background: var(--primary-color);
         padding: 15px 30px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        animation: slideIn 0.5s ease-out;
-      }
-
-      .navbar .tabs {
-        display: flex;
-        gap: 25px;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px var(--glow);
       }
 
       .navbar .tabs a {
-        color: var(--light-color);
+        color: var(--accent);
         text-decoration: none;
-        font-weight: bold;
-        padding: 5px 0;
+        margin: 0 15px;
         position: relative;
-        transition: color 0.3s;
+        font-weight: bold;
+        transition: 0.3s;
       }
-
       .navbar .tabs a::after {
         content: '';
         position: absolute;
-        bottom: 0;
+        bottom: -3px;
         left: 0;
         width: 0;
-        height: 2px;
-        background-color: var(--accent-color);
-        transition: width 0.3s ease-out;
+        height: 3px;
+        background: var(--primary);
+        transition: 0.3s;
       }
-
-      .navbar .tabs a:hover,
-      .navbar .tabs a.active {
-        color: var(--accent-color);
-      }
-
-      .navbar .tabs a:hover::after,
-      .navbar .tabs a.active::after {
+      .navbar .tabs a:hover::after {
         width: 100%;
       }
 
-      .navbar .login button {
-        background: var(--secondary-color);
-        color: var(--light-color);
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 5px;
-        font-weight: bold;
-        transition: background-color 0.3s, transform 0.2s;
-      }
-
-      .navbar .login button:hover {
-        background: #219150;
-        transform: scale(1.05);
-      }
-
-      /* Sections */
+      /* Section */
       .section {
         display: none;
-        padding: 40px;
-        animation: fadeIn 0.5s ease-in-out;
+        padding: 60px 40px;
       }
-
       .section.active {
         display: block;
       }
 
-      .section h2 {
-        color: var(--primary-color);
-        border-bottom: 3px solid var(--accent-color);
-        padding-bottom: 10px;
-        margin-bottom: 30px;
-      }
-
-      /* Breed Recognition Section */
-      #breed .content-wrapper {
-        display: flex;
-        gap: 30px;
-        flex-wrap: wrap;
-      }
-
-      #breed .media-column,
-      #breed .results-column {
-        flex: 1;
-        min-width: 320px;
-      }
-
-      #webcam,
-      #preview {
-        width: 100%;
-        height: auto;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        background: #fafafa;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      .controls {
-        margin-top: 15px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      button,
-      input[type='file'] {
-        padding: 12px 18px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: all 0.3s;
-      }
-
-      button {
-        background-color: var(--accent-color);
-        color: var(--light-color);
-      }
-
-      button:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      }
-
-      button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-
-      .pred {
-        margin-top: 20px;
-        background: var(--light-color);
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #eee;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      }
-
+      /* Breed Cards */
       .breed-box {
-        padding: 15px;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        background: #f9f9f9;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--primary);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
         font-size: 18px;
         font-weight: bold;
+        perspective: 1000px;
         cursor: pointer;
-        margin-top: 12px;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transform-style: preserve-3d;
+        transition: transform 0.5s, box-shadow 0.5s;
+        box-shadow: 0 0 10px var(--card-shadow);
       }
 
       .breed-box:hover {
-        transform: scale(1.02);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border-color: var(--accent-color);
+        transform: rotateY(15deg) rotateX(5deg) scale(1.05);
+        box-shadow: 0 0 40px var(--glow);
       }
 
       .breed-details {
-        display: none;
-        margin-top: 10px;
-        padding: 12px;
-        background: #eef6ff;
-        border-left: 4px solid var(--accent-color);
+        margin-top: 12px;
+        background: rgba(0, 0, 0, 0.7);
+        border-left: 4px solid var(--secondary);
         border-radius: 6px;
-        font-size: 15px;
-        animation: fadeIn 0.4s;
+        padding: 15px;
+        display: none;
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Controls */
+      .controls button,
+      input[type='file'] {
+        background: rgba(0, 255, 255, 0.1);
+        border: 1px solid var(--primary);
+        color: var(--accent);
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        margin: 5px 0;
+        transition: 0.3s;
+      }
+      .controls button:hover {
+        background: rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 20px var(--glow);
+        transform: scale(1.05);
+      }
+
+      /* Video/Image */
+      #webcam,
+      #preview {
+        border: 2px solid var(--primary);
+        border-radius: 12px;
+        box-shadow: 0 0 25px var(--glow);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      #webcam:hover,
+      #preview:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 50px var(--glow);
       }
     </style>
   </head>
@@ -527,6 +469,27 @@
         a.click()
         URL.revokeObjectURL(url)
       }
+    </script>
+    <script>
+      const cards = document.querySelectorAll('.breed-box')
+
+      cards.forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect()
+          const x = e.clientX - rect.left
+          const y = e.clientY - rect.top
+          const cx = rect.width / 2
+          const cy = rect.height / 2
+          const dx = (x - cx) / cx
+          const dy = (y - cy) / cy
+          card.style.transform = `rotateY(${dx * 15}deg) rotateX(${
+            -dy * 15
+          }deg) scale(1.05)`
+        })
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)'
+        })
+      })
     </script>
   </body>
 </html>
