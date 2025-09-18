@@ -1,274 +1,309 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Breed Detection Model</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
-        :root {
-            --primary-color: #2c3e50; /* Deep Blue */
-            --secondary-color: #27ae60; /* Green */
-            --accent-color: #3498db; /* Bright Blue */
-            --light-color: #ffffff; /* White */
-            --text-color: #333;
-            --bg-color: #ecf0f1; /* Light Grey */
-        }
+      :root {
+        --primary-color: #2c3e50; /* Deep Blue */
+        --secondary-color: #27ae60; /* Green */
+        --accent-color: #3498db; /* Bright Blue */
+        --light-color: #ffffff; /* White */
+        --text-color: #333;
+        --bg-color: #ecf0f1; /* Light Grey */
+      }
 
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        @keyframes slideIn {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
         }
+        to {
+          transform: translateX(0);
+        }
+      }
 
-        /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--primary-color);
-            padding: 15px 30px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            animation: slideIn 0.5s ease-out;
-        }
+      /* Navbar */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--primary-color);
+        padding: 15px 30px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        animation: slideIn 0.5s ease-out;
+      }
 
-        .navbar .tabs {
-            display: flex;
-            gap: 25px;
-        }
+      .navbar .tabs {
+        display: flex;
+        gap: 25px;
+      }
 
-        .navbar .tabs a {
-            color: var(--light-color);
-            text-decoration: none;
-            font-weight: bold;
-            padding: 5px 0;
-            position: relative;
-            transition: color 0.3s;
-        }
+      .navbar .tabs a {
+        color: var(--light-color);
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0;
+        position: relative;
+        transition: color 0.3s;
+      }
 
-        .navbar .tabs a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease-out;
-        }
+      .navbar .tabs a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease-out;
+      }
 
-        .navbar .tabs a:hover, .navbar .tabs a.active {
-            color: var(--accent-color);
-        }
+      .navbar .tabs a:hover,
+      .navbar .tabs a.active {
+        color: var(--accent-color);
+      }
 
-        .navbar .tabs a:hover::after, .navbar .tabs a.active::after {
-            width: 100%;
-        }
+      .navbar .tabs a:hover::after,
+      .navbar .tabs a.active::after {
+        width: 100%;
+      }
 
-        .navbar .login button {
-            background: var(--secondary-color);
-            color: var(--light-color);
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.2s;
-        }
+      .navbar .login button {
+        background: var(--secondary-color);
+        color: var(--light-color);
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.2s;
+      }
 
-        .navbar .login button:hover {
-            background: #219150;
-            transform: scale(1.05);
-        }
+      .navbar .login button:hover {
+        background: #219150;
+        transform: scale(1.05);
+      }
 
-        /* Sections */
-        .section {
-            display: none;
-            padding: 40px;
-            animation: fadeIn 0.5s ease-in-out;
-        }
+      /* Sections */
+      .section {
+        display: none;
+        padding: 40px;
+        animation: fadeIn 0.5s ease-in-out;
+      }
 
-        .section.active {
-            display: block;
-        }
+      .section.active {
+        display: block;
+      }
 
-        .section h2 {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-        }
+      .section h2 {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--accent-color);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+      }
 
-        /* Breed Recognition Section */
-        #breed .content-wrapper {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
+      /* Breed Recognition Section */
+      #breed .content-wrapper {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
 
-        #breed .media-column, #breed .results-column {
-            flex: 1;
-            min-width: 320px;
-        }
+      #breed .media-column,
+      #breed .results-column {
+        flex: 1;
+        min-width: 320px;
+      }
 
-        #webcam, #preview {
-            width: 100%;
-            height: auto;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: #fafafa;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+      #webcam,
+      #preview {
+        width: 100%;
+        height: auto;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        background: #fafafa;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
 
-        .controls {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+      .controls {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
 
-        button, input[type="file"] {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
+      button,
+      input[type='file'] {
+        padding: 12px 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
 
-        button {
-            background-color: var(--accent-color);
-            color: var(--light-color);
-        }
+      button {
+        background-color: var(--accent-color);
+        color: var(--light-color);
+      }
 
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
+      button:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
 
-        .pred {
-            margin-top: 20px;
-            background: var(--light-color);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #eee;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
 
-        .breed-box {
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: #f9f9f9;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+      .pred {
+        margin-top: 20px;
+        background: var(--light-color);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #eee;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
 
-        .breed-box:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: var(--accent-color);
-        }
+      .breed-box {
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        background: #f9f9f9;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
 
-        .breed-details {
-            display: none;
-            margin-top: 10px;
-            padding: 12px;
-            background: #eef6ff;
-            border-left: 4px solid var(--accent-color);
-            border-radius: 6px;
-            font-size: 15px;
-            animation: fadeIn 0.4s;
-        }
+      .breed-box:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-color: var(--accent-color);
+      }
+
+      .breed-details {
+        display: none;
+        margin-top: 10px;
+        padding: 12px;
+        background: #eef6ff;
+        border-left: 4px solid var(--accent-color);
+        border-radius: 6px;
+        font-size: 15px;
+        animation: fadeIn 0.4s;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="navbar">
-        <div class="tabs">
-            <a href="#breed" class="active">Breed Recognition</a>
-            <a href="#search">Searches & Info</a>
-            <a href="#health">Health & Care</a>
-            <a href="#feedback">Feedback</a>
-            <a href="#about">About Us</a>
-        </div>
-        <div class="login">
-            <button onclick="alert('Login feature coming soon!')">Login</button>
-        </div>
+      <div class="tabs">
+        <a href="#breed" class="active">Breed Recognition</a>
+        <a href="#search">Searches & Info</a>
+        <a href="#health">Health & Care</a>
+        <a href="#feedback">Feedback</a>
+        <a href="#about">About Us</a>
+      </div>
+      <div class="login">
+        <button onclick="alert('Login feature coming soon!')">Login</button>
+      </div>
     </div>
 
     <!-- Sections -->
     <div id="breed" class="section active">
-        <h2>Breed Recognition</h2>
-        <div class="content-wrapper">
-            <div class="media-column">
-                <video id="webcam" autoplay playsinline></video>
-                <img id="preview" style="display: none" />
-                <canvas id="hiddenCanvas" width="224" height="224" style="display: none"></canvas>
-                <div class="controls">
-                    <button id="startCam">Start Camera</button>
-                    <button id="snap">Capture</button>
-                    <input type="file" id="fileInput" accept="image/*" />
-                </div>
-            </div>
-            <div class="results-column">
-                <p id="status">Loading model...</p>
-                <div class="pred">
-                    <h3>Predictions</h3>
-                    <div id="predList">No predictions yet</div>
-                    <div id="breedBoxes"></div>
-                    <button id="confirmBtn" disabled>Confirm</button>
-                    <button id="overrideBtn" disabled>Override</button>
-                    <select id="overrideSelect" style="display: none;"></select>
-                </div>
-            </div>
+      <h2>Breed Recognition</h2>
+      <div class="content-wrapper">
+        <div class="media-column">
+          <video id="webcam" autoplay playsinline></video>
+          <img id="preview" style="display: none" />
+          <canvas
+            id="hiddenCanvas"
+            width="224"
+            height="224"
+            style="display: none"
+          ></canvas>
+          <div class="controls">
+            <button id="startCam">Start Camera</button>
+            <button id="snap">Capture</button>
+            <input type="file" id="fileInput" accept="image/*" />
+          </div>
         </div>
+        <div class="results-column">
+          <p id="status">Loading model...</p>
+          <div class="pred">
+            <h3>Predictions</h3>
+            <div id="predList">No predictions yet</div>
+            <div id="breedBoxes"></div>
+            <button id="confirmBtn" disabled>Confirm</button>
+            <button id="overrideBtn" disabled>Override</button>
+            <select id="overrideSelect" style="display: none"></select>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="search" class="section">
-        <h2>Searches & Info</h2>
-        <input type="text" id="breedSearch" placeholder="Search for a breed..." style="width: 60%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;" />
-        <div id="searchResults" style="margin-top: 20px;"></div>
+      <h2>Searches & Info</h2>
+      <input
+        type="text"
+        id="breedSearch"
+        placeholder="Search for a breed..."
+        style="
+          width: 60%;
+          padding: 10px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        "
+      />
+      <div id="searchResults" style="margin-top: 20px"></div>
     </div>
 
     <div id="health" class="section">
-        <h2>Health & Care</h2>
-        <p>Here you can add animal health and care details in future.</p>
+      <h2>Health & Care</h2>
+      <p>Here you can add animal health and care details in future.</p>
     </div>
 
     <div id="feedback" class="section">
-        <h2>Feedback</h2>
-         <button id="downloadFeedback">Download Feedback CSV</button>
+      <h2>Feedback</h2>
+      <button id="downloadFeedback">Download Feedback CSV</button>
     </div>
 
     <div id="about" class="section">
-        <h2>About Us</h2>
-        <p>This project is part of Smart India Hackathon to support FLWs in breed recognition.</p>
+      <h2>About Us</h2>
+      <p>
+        This project is part of Smart India Hackathon to support FLWs in breed
+        recognition.
+      </p>
     </div>
 
     <!-- Scripts -->
@@ -277,60 +312,61 @@
 
     <script>
       // Handle tab switching
-      const tabs = document.querySelectorAll('.navbar .tabs a');
-      const sections = document.querySelectorAll('.section');
+      const tabs = document.querySelectorAll('.navbar .tabs a')
+      const sections = document.querySelectorAll('.section')
 
-      tabs.forEach(tab => {
+      tabs.forEach((tab) => {
         tab.addEventListener('click', (e) => {
-          e.preventDefault();
-          
-          tabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
+          e.preventDefault()
 
-          const targetId = tab.getAttribute('href').substring(1);
-          sections.forEach(sec => sec.classList.remove('active'));
-          document.getElementById(targetId).classList.add('active');
-        });
-      });
+          tabs.forEach((t) => t.classList.remove('active'))
+          tab.classList.add('active')
+
+          const targetId = tab.getAttribute('href').substring(1)
+          sections.forEach((sec) => sec.classList.remove('active'))
+          document.getElementById(targetId).classList.add('active')
+        })
+      })
     </script>
 
     <script>
       // 🔹 LOCAL path to model folder
-      const LOCAL_MODEL_URL = './model/';
+      const LOCAL_MODEL_URL = './model/'
       // 🔹 Hosted Teachable Machine model URL (replace with yours if needed)
-      const HOSTED_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/YOUR_MODEL_ID/';
+      const HOSTED_MODEL_URL =
+        'https://teachablemachine.withgoogle.com/models/YOUR_MODEL_ID/'
 
-      let model, maxPredictions;
-      const video = document.getElementById('webcam');
-      const preview = document.getElementById('preview');
-      const canvas = document.getElementById('hiddenCanvas');
-      const ctx = canvas.getContext('2d');
-      const predList = document.getElementById('predList');
-      const status = document.getElementById('status');
-      const confirmBtn = document.getElementById('confirmBtn');
-      const overrideBtn = document.getElementById('overrideBtn');
-      const overrideSelect = document.getElementById('overrideSelect');
-      const feedbackKey = 'breedid_feedback_v1';
+      let model, maxPredictions
+      const video = document.getElementById('webcam')
+      const preview = document.getElementById('preview')
+      const canvas = document.getElementById('hiddenCanvas')
+      const ctx = canvas.getContext('2d')
+      const predList = document.getElementById('predList')
+      const status = document.getElementById('status')
+      const confirmBtn = document.getElementById('confirmBtn')
+      const overrideBtn = document.getElementById('overrideBtn')
+      const overrideSelect = document.getElementById('overrideSelect')
+      const feedbackKey = 'breedid_feedback_v1'
 
       // Load model with fallback
       async function init() {
-        status.innerText = 'Loading model...';
+        status.innerText = 'Loading model...'
         try {
           model = await tmImage.load(
             LOCAL_MODEL_URL + 'model.json',
             LOCAL_MODEL_URL + 'metadata.json'
-          );
-          status.innerText = '✅ Model loaded (local)';
+          )
+          status.innerText = '✅ Model loaded (local)'
         } catch (err) {
-          console.warn('Local model not found, trying hosted URL...', err);
+          console.warn('Local model not found, trying hosted URL...', err)
           model = await tmImage.load(
             HOSTED_MODEL_URL + 'model.json',
             HOSTED_MODEL_URL + 'metadata.json'
-          );
-          status.innerText = '✅ Model loaded (hosted)';
+          )
+          status.innerText = '✅ Model loaded (hosted)'
         }
 
-        maxPredictions = model.getTotalClasses();
+        maxPredictions = model.getTotalClasses()
         overrideSelect.innerHTML = [...Array(maxPredictions).keys()]
           .map(
             (i) =>
@@ -338,54 +374,54 @@
                 i
               )}</option>`
           )
-          .join('');
+          .join('')
       }
-      init();
+      init()
 
       document.getElementById('startCam').onclick = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'environment' },
-        });
-        video.srcObject = stream;
-        video.style.display = 'block';
-        preview.style.display = 'none';
-      };
+        })
+        video.srcObject = stream
+        video.style.display = 'block'
+        preview.style.display = 'none'
+      }
 
       document.getElementById('snap').onclick = async () => {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        showPreview(canvas.toDataURL());
-        await predict(canvas);
-      };
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+        showPreview(canvas.toDataURL())
+        await predict(canvas)
+      }
 
       document.getElementById('fileInput').onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
+        const file = e.target.files[0]
+        if (!file) return
+        const reader = new FileReader()
         reader.onload = (ev) => {
-          showPreview(ev.target.result);
-          let img = new Image();
+          showPreview(ev.target.result)
+          let img = new Image()
           img.onload = async () => {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            await predict(canvas);
-          };
-          img.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-      };
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+            await predict(canvas)
+          }
+          img.src = ev.target.result
+        }
+        reader.readAsDataURL(file)
+      }
 
       function showPreview(src) {
-        preview.src = src;
-        preview.style.display = 'block';
-        video.style.display = 'none';
+        preview.src = src
+        preview.style.display = 'block'
+        video.style.display = 'none'
       }
 
       async function predict(source) {
         if (!model) {
-          status.innerText = '⚠️ Model not loaded yet!';
-          return;
+          status.innerText = '⚠️ Model not loaded yet!'
+          return
         }
-        const preds = await model.predict(source);
-        preds.sort((a, b) => b.probability - a.probability);
+        const preds = await model.predict(source)
+        preds.sort((a, b) => b.probability - a.probability)
 
         predList.innerHTML = preds
           .slice(0, 3)
@@ -395,9 +431,9 @@
                 2
               )}%</div>`
           )
-          .join('');
+          .join('')
 
-        const breedBoxes = document.getElementById('breedBoxes');
+        const breedBoxes = document.getElementById('breedBoxes')
         breedBoxes.innerHTML = preds
           .slice(0, 3)
           .map(
@@ -412,50 +448,50 @@
           </div>
         `
           )
-          .join('');
+          .join('')
 
-        confirmBtn.disabled = false;
-        overrideBtn.disabled = false;
+        confirmBtn.disabled = false
+        overrideBtn.disabled = false
         window._lastPrediction = {
           top3: preds.slice(0, 3),
           img: source.toDataURL?.() || null,
           time: new Date().toISOString(),
-        };
+        }
       }
 
       function toggleBreedDetails(i, breedName) {
-        const detailBox = document.getElementById(`breed-details-${i}`);
+        const detailBox = document.getElementById(`breed-details-${i}`)
         detailBox.style.display =
-          detailBox.style.display === 'block' ? 'none' : 'block';
+          detailBox.style.display === 'block' ? 'none' : 'block'
       }
 
       confirmBtn.onclick = () => {
-        if (!window._lastPrediction) return;
+        if (!window._lastPrediction) return
         saveFeedback({
           action: 'confirm',
           chosen: window._lastPrediction.top3[0].className,
-        });
-        status.innerText = `Confirmed: ${window._lastPrediction.top3[0].className}`;
-      };
+        })
+        status.innerText = `Confirmed: ${window._lastPrediction.top3[0].className}`
+      }
 
       overrideBtn.onclick = () => {
-        overrideSelect.style.display = 'inline-block';
+        overrideSelect.style.display = 'inline-block'
         overrideSelect.onchange = () => {
-          saveFeedback({ action: 'override', chosen: overrideSelect.value });
-          status.innerText = `Overridden to: ${overrideSelect.value}`;
-          overrideSelect.style.display = 'none';
-        };
-      };
+          saveFeedback({ action: 'override', chosen: overrideSelect.value })
+          status.innerText = `Overridden to: ${overrideSelect.value}`
+          overrideSelect.style.display = 'none'
+        }
+      }
 
       function saveFeedback(entry) {
-        const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]');
-        data.push({ ...entry, ...window._lastPrediction });
-        localStorage.setItem(feedbackKey, JSON.stringify(data));
+        const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]')
+        data.push({ ...entry, ...window._lastPrediction })
+        localStorage.setItem(feedbackKey, JSON.stringify(data))
       }
 
       document.getElementById('downloadFeedback').onclick = () => {
-        const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]');
-        if (!data.length) return alert('No feedback yet');
+        const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]')
+        if (!data.length) return alert('No feedback yet')
         const rows = [
           [
             'time',
@@ -468,7 +504,7 @@
             'top3',
             'prob3',
           ],
-        ];
+        ]
         data.forEach((e) => {
           rows.push([
             e.time,
@@ -480,17 +516,17 @@
             (e.top3[1]?.probability * 100).toFixed(2),
             e.top3[2]?.className,
             (e.top3[2]?.probability * 100).toFixed(2),
-          ]);
-        });
-        const csv = rows.map((r) => r.join(',')).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'feedback.csv';
-        a.click();
-        URL.revokeObjectURL(url);
+          ])
+        })
+        const csv = rows.map((r) => r.join(',')).join('\n')
+        const blob = new Blob([csv], { type: 'text/csv' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'feedback.csv'
+        a.click()
+        URL.revokeObjectURL(url)
       }
     </script>
-</body>
+  </body>
 </html>
