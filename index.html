@@ -1,339 +1,445 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <title>Breed ID — Demo</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
+  <head>
+    <meta charset="utf-8" />
+    <title>Breed Detection Model</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
 
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-/* Navbar full width */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #2c3e50;
-  padding: 12px 20px;
-  width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+      /* Navbar full width */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #2c3e50;
+        padding: 12px 20px;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
 
-/* Sections take full width */
-.section {
-  flex: 1;
-  width: 100%;
-  padding: 30px;
-  box-sizing: border-box;
-}
+      /* Sections take full width */
+      .section {
+        flex: 1;
+        width: 100%;
+        padding: 30px;
+        box-sizing: border-box;
+      }
 
-    
-    #webcam, #preview {width:320px; height:auto; border:1px solid #ddd; background:#fafafa;}
-    .controls {margin-top:8px;}
-    .pred {margin-top:10px; background:#fff; padding:8px; border-radius:6px; border:1px solid #eee;}
-    .row {display:flex; justify-content:space-between; padding:6px 0;}
-    .bar {height:8px; background:#6aa3ff; border-radius:4px; margin-left:8px;}
-    button{padding:8px 12px; margin-right:8px;}
-    /* Navbar styles */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #2c3e50;
-  padding: 10px 20px;
-}
-.navbar .tabs {
-  display: flex;
-  gap: 20px;
-}
-.navbar .tabs a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-.navbar .tabs a:hover {
-  text-decoration: underline;
-}
-.navbar .login {
-  margin-left: auto;
-}
-.navbar .login button {
-  background: #27ae60;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.navbar .login button:hover {
-  background: #219150;
-}
- /* Sections */
-.section {
-  display: none;
-  padding: 20px;
-}
-.section.active {
-  display: block;
-}
-.breed-box {
-  padding: 15px;
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  background: #f9f9f9;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 12px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+      #webcam,
+      #preview {
+        width: 320px;
+        height: auto;
+        border: 1px solid #ddd;
+        background: #fafafa;
+      }
+      .controls {
+        margin-top: 8px;
+      }
+      .pred {
+        margin-top: 10px;
+        background: #fff;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #eee;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+      }
+      .bar {
+        height: 8px;
+        background: #6aa3ff;
+        border-radius: 4px;
+        margin-left: 8px;
+      }
+      button {
+        padding: 8px 12px;
+        margin-right: 8px;
+      }
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #2c3e50;
+        padding: 10px 20px;
+      }
+      .navbar .tabs {
+        display: flex;
+        gap: 20px;
+      }
+      .navbar .tabs a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .navbar .tabs a:hover {
+        text-decoration: underline;
+      }
+      .navbar .login {
+        margin-left: auto;
+      }
+      .navbar .login button {
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .navbar .login button:hover {
+        background: #219150;
+      }
+      /* Sections */
+      .section {
+        display: none;
+        padding: 20px;
+      }
+      .section.active {
+        display: block;
+      }
+      .breed-box {
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        background: #f9f9f9;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
 
-.breed-box:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
+      .breed-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
 
-.breed-details {
-  display: none;
-  margin-top: 8px;
-  padding: 12px;
-  background: #eef6ff;
-  border-left: 3px solid #3498db;
-  border-radius: 6px;
-  font-size: 15px;
-}
-
-
-  </style>
-</head>
-<body>   
-  <div class="navbar">
-  <div class="tabs">
-    <a href="#breed">Breed Recognition</a>
-    <a href="#search">Searches & Info</a>
-    <a href="#health">Health & Care</a>
-    <a href="#feedback">Feedback</a>
-    <a href="#about">About Us</a>
-  </div>
-  <div class="login">
-    <button onclick="alert('Login feature coming soon!')">Login</button>
-  </div>
-</div>
-
-    <!-- Sections -->
-<div id="breed" class="section active">
-  <h2>Breed Recognition</h2>
-  <video id="webcam" autoplay playsinline></video>
-  <img id="preview" style="display:none;" />
-  <canvas id="hiddenCanvas" width="224" height="224" style="display:none;"></canvas>
-
-  <div class="controls">
-    <button id="startCam">Start Camera</button>
-    <button id="snap">Capture</button>
-    <input type="file" id="fileInput" accept="image/*" />
-    <button id="downloadFeedback">Download Feedback CSV</button>
-  </div>
-
-  <p id="status">Loading model...</p>
-
-  <div class="pred">
-    <h3>Predictions</h3>
-    <div id="predList">No predictions yet</div>
-    <div id="breedBoxes"></div>
-    <button id="confirmBtn" disabled>Confirm</button>
-    <button id="overrideBtn" disabled>Override</button>
-    <select id="overrideSelect" style="display:none;"></select>
-  </div>
-</div>
-
-<div id="search" class="section">
-  <h2>Searches & Info</h2>
-<input type="text" id="breedSearch" placeholder="Search for a breed..." style="width:60%; padding:10px; font-size:16px; border:1px solid #ccc; border-radius:6px;">
-<div id="searchResults" style="margin-top:20px;"></div>
-
-</div>
-
-<div id="health" class="section">
-  <h2>Health & Care</h2>
-  <p>Here you can add animal health and care details in future.</p>
-</div>
-
-<div id="feedback" class="section">
-  <h2>Feedback</h2>
-  <p>Here you can place a form or feedback section.</p>
-</div>
-
-<div id="about" class="section">
-  <h2>About Us</h2>
-  <p>This project is part of Smart India Hackathon to support FLWs in breed recognition.</p>
-</div>
-
-
-  <!-- Load scripts in correct order -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-
- <script>
-  // Handle tab switching
-  const tabs = document.querySelectorAll(".navbar .tabs a");
-  const sections = document.querySelectorAll(".section");
-
-  tabs.forEach(tab => {
-    tab.addEventListener("click", (e) => {
-      e.preventDefault();
-      const targetId = tab.getAttribute("href").substring(1);
-      
-      sections.forEach(sec => sec.classList.remove("active"));
-      document.getElementById(targetId).classList.add("active");
-    });
-  });
-</script>
-
-  <script>
-    const MODEL_URL = "./model/";
-    let model, maxPredictions;
-
-    const video = document.getElementById('webcam');
-    const preview = document.getElementById('preview');
-    const canvas = document.getElementById('hiddenCanvas');
-    const ctx = canvas.getContext('2d');
-    const predList = document.getElementById('predList');
-    const status = document.getElementById('status');
-    const confirmBtn = document.getElementById('confirmBtn');
-    const overrideBtn = document.getElementById('overrideBtn');
-    const overrideSelect = document.getElementById('overrideSelect');
-    const feedbackKey = "breedid_feedback_v1";
-
-    async function init() {
-      status.innerText = "Loading model...";
-      model = await tmImage.load(MODEL_URL + "model.json", MODEL_URL + "metadata.json");
-      maxPredictions = model.getTotalClasses();
-      status.innerText = "Model loaded ✅";
-      overrideSelect.innerHTML = [...Array(maxPredictions).keys()]
-        .map(i => `<option value="${model.getClassLabel(i)}">${model.getClassLabel(i)}</option>`).join('');
-    }
-    init();
-
-    document.getElementById('startCam').onclick = async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-      video.srcObject = stream;
-      video.style.display = 'block';
-      preview.style.display = 'none';
-    };
-
-    document.getElementById('snap').onclick = async () => {
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      showPreview(canvas.toDataURL());
-      await predict(canvas);
-    };
-
-    document.getElementById('fileInput').onchange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        showPreview(ev.target.result);
-        let img = new Image();
-        img.onload = async () => {
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          await predict(canvas);
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-    };
-
-    function showPreview(src) {
-      preview.src = src;
-      preview.style.display = 'block';
-      video.style.display = 'none';
-    }
-
-    
-      async function predict(source) {
-  const preds = await model.predict(source);
-  preds.sort((a, b) => b.probability - a.probability);
-
-  // Top 3 inline summary (kept as before)
-  predList.innerHTML = preds.slice(0, 3).map(p =>
-    `<div class="row"><b>${p.className}</b> ${(p.probability * 100).toFixed(2)}%</div>`
-  ).join('');
-
-  // 🔹 New: clickable breed boxes
-  const breedBoxes = document.getElementById("breedBoxes");
-  breedBoxes.innerHTML = preds.slice(0, 3).map((p, i) => `
-    <div class="breed-box" onclick="toggleBreedDetails(${i}, '${p.className}')">
-      ${p.className} — ${(p.probability * 100).toFixed(2)}%
-      <div id="breed-details-${i}" class="breed-details">
-        General details about <b>${p.className}</b> will appear here (you will feed later).
+      .breed-details {
+        display: none;
+        margin-top: 8px;
+        padding: 12px;
+        background: #eef6ff;
+        border-left: 3px solid #3498db;
+        border-radius: 6px;
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="tabs">
+        <a href="#breed">Breed Recognition</a>
+        <a href="#search">Searches & Info</a>
+        <a href="#health">Health & Care</a>
+        <a href="#feedback">Feedback</a>
+        <a href="#about">About Us</a>
+      </div>
+      <div class="login">
+        <button onclick="alert('Login feature coming soon!')">Login</button>
       </div>
     </div>
-  `).join("");
 
-  confirmBtn.disabled = false;
-  overrideBtn.disabled = false;
-  window._lastPrediction = { top3: preds.slice(0,3), img: source.toDataURL?.() || null, time: new Date().toISOString() };
-}
-function toggleBreedDetails(i, breedName) {
-  const detailBox = document.getElementById(`breed-details-${i}`);
-  if (detailBox.style.display === "block") {
-    detailBox.style.display = "none";
-  } else {
-    detailBox.style.display = "block";
-  }
-}
+    <!-- Sections -->
+    <div id="breed" class="section active">
+      <h2>Breed Recognition</h2>
+      <video id="webcam" autoplay playsinline></video>
+      <img id="preview" style="display: none" />
+      <canvas
+        id="hiddenCanvas"
+        width="224"
+        height="224"
+        style="display: none"
+      ></canvas>
 
+      <div class="controls">
+        <button id="startCam">Start Camera</button>
+        <button id="snap">Capture</button>
+        <input type="file" id="fileInput" accept="image/*" />
+        <button id="downloadFeedback">Download Feedback CSV</button>
+      </div>
 
-    confirmBtn.onclick = () => {
-      if (!window._lastPrediction) return;
-      saveFeedback({ action: "confirm", chosen: window._lastPrediction.top3[0].className });
-      status.innerText = `Confirmed: ${window._lastPrediction.top3[0].className}`;
-    };
+      <p id="status">Loading model...</p>
 
-    overrideBtn.onclick = () => {
-      overrideSelect.style.display = 'inline-block';
-      overrideSelect.onchange = () => {
-        saveFeedback({ action: "override", chosen: overrideSelect.value });
-        status.innerText = `Overridden to: ${overrideSelect.value}`;
-        overrideSelect.style.display = 'none';
-      };
-    };
+      <div class="pred">
+        <h3>Predictions</h3>
+        <div id="predList">No predictions yet</div>
+        <div id="breedBoxes"></div>
+        <button id="confirmBtn" disabled>Confirm</button>
+        <button id="overrideBtn" disabled>Override</button>
+        <select id="overrideSelect" style="display: none"></select>
+      </div>
+    </div>
 
-    function saveFeedback(entry) {
-      const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]');
-      data.push({ ...entry, ...window._lastPrediction });
-      localStorage.setItem(feedbackKey, JSON.stringify(data));
-    }
+    <div id="search" class="section">
+      <h2>Searches & Info</h2>
+      <input
+        type="text"
+        id="breedSearch"
+        placeholder="Search for a breed..."
+        style="
+          width: 60%;
+          padding: 10px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        "
+      />
+      <div id="searchResults" style="margin-top: 20px"></div>
+    </div>
 
-    document.getElementById('downloadFeedback').onclick = () => {
-      const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]');
-      if (!data.length) return alert("No feedback yet");
-      const rows = [["time","action","chosen","top1","prob1","top2","prob2","top3","prob3"]];
-      data.forEach(e => {
-        rows.push([e.time,e.action,e.chosen,
-          e.top3[0].className,(e.top3[0].probability*100).toFixed(2),
-          e.top3[1]?.className,(e.top3[1]?.probability*100).toFixed(2),
-          e.top3[2]?.className,(e.top3[2]?.probability*100).toFixed(2)]);
-      });
-      const csv = rows.map(r => r.join(",")).join("\n");
-      const blob = new Blob([csv], {type:"text/csv"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a"); a.href=url; a.download="feedback.csv"; a.click();
-      URL.revokeObjectURL(url);
-    };
-  </script>
-</body>
+    <div id="health" class="section">
+      <h2>Health & Care</h2>
+      <p>Here you can add animal health and care details in future.</p>
+    </div>
+
+    <div id="feedback" class="section">
+      <h2>Feedback</h2>
+      <p>Here you can place a form or feedback section.</p>
+    </div>
+
+    <div id="about" class="section">
+      <h2>About Us</h2>
+      <p>
+        This project is part of Smart India Hackathon to support FLWs in breed
+        recognition.
+      </p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+    <script>
+      // Handle tab switching
+      const tabs = document.querySelectorAll('.navbar .tabs a')
+      const sections = document.querySelectorAll('.section')
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          e.preventDefault()
+          const targetId = tab.getAttribute('href').substring(1)
+          sections.forEach((sec) => sec.classList.remove('active'))
+          document.getElementById(targetId).classList.add('active')
+        })
+      })
+    </script>
+
+    <script>
+      // 🔹 LOCAL path to model folder
+      const LOCAL_MODEL_URL = './model/'
+      // 🔹 Hosted Teachable Machine model URL (replace with yours if needed)
+      const HOSTED_MODEL_URL =
+        'https://teachablemachine.withgoogle.com/models/YOUR_MODEL_ID/'
+
+      let model, maxPredictions
+      const video = document.getElementById('webcam')
+      const preview = document.getElementById('preview')
+      const canvas = document.getElementById('hiddenCanvas')
+      const ctx = canvas.getContext('2d')
+      const predList = document.getElementById('predList')
+      const status = document.getElementById('status')
+      const confirmBtn = document.getElementById('confirmBtn')
+      const overrideBtn = document.getElementById('overrideBtn')
+      const overrideSelect = document.getElementById('overrideSelect')
+      const feedbackKey = 'breedid_feedback_v1'
+
+      // Load model with fallback
+      async function init() {
+        status.innerText = 'Loading model...'
+        try {
+          model = await tmImage.load(
+            LOCAL_MODEL_URL + 'model.json',
+            LOCAL_MODEL_URL + 'metadata.json'
+          )
+          status.innerText = '✅ Model loaded (local)'
+        } catch (err) {
+          console.warn('Local model not found, trying hosted URL...', err)
+          model = await tmImage.load(
+            HOSTED_MODEL_URL + 'model.json',
+            HOSTED_MODEL_URL + 'metadata.json'
+          )
+          status.innerText = '✅ Model loaded (hosted)'
+        }
+
+        maxPredictions = model.getTotalClasses()
+        overrideSelect.innerHTML = [...Array(maxPredictions).keys()]
+          .map(
+            (i) =>
+              `<option value="${model.getClassLabel(i)}">${model.getClassLabel(
+                i
+              )}</option>`
+          )
+          .join('')
+      }
+      init()
+
+      document.getElementById('startCam').onclick = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' },
+        })
+        video.srcObject = stream
+        video.style.display = 'block'
+        preview.style.display = 'none'
+      }
+
+      document.getElementById('snap').onclick = async () => {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+        showPreview(canvas.toDataURL())
+        await predict(canvas)
+      }
+
+      document.getElementById('fileInput').onchange = (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+        const reader = new FileReader()
+        reader.onload = (ev) => {
+          showPreview(ev.target.result)
+          let img = new Image()
+          img.onload = async () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+            await predict(canvas)
+          }
+          img.src = ev.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+
+      function showPreview(src) {
+        preview.src = src
+        preview.style.display = 'block'
+        video.style.display = 'none'
+      }
+
+      async function predict(source) {
+        if (!model) {
+          status.innerText = '⚠️ Model not loaded yet!'
+          return
+        }
+        const preds = await model.predict(source)
+        preds.sort((a, b) => b.probability - a.probability)
+
+        predList.innerHTML = preds
+          .slice(0, 3)
+          .map(
+            (p) =>
+              `<div><b>${p.className}</b> ${(p.probability * 100).toFixed(
+                2
+              )}%</div>`
+          )
+          .join('')
+
+        const breedBoxes = document.getElementById('breedBoxes')
+        breedBoxes.innerHTML = preds
+          .slice(0, 3)
+          .map(
+            (p, i) => `
+          <div class="breed-box" onclick="toggleBreedDetails(${i}, '${
+              p.className
+            }')">
+            ${p.className} — ${(p.probability * 100).toFixed(2)}%
+            <div id="breed-details-${i}" class="breed-details" style="display:none;">
+              General details about <b>${p.className}</b> will appear here.
+            </div>
+          </div>
+        `
+          )
+          .join('')
+
+        confirmBtn.disabled = false
+        overrideBtn.disabled = false
+        window._lastPrediction = {
+          top3: preds.slice(0, 3),
+          img: source.toDataURL?.() || null,
+          time: new Date().toISOString(),
+        }
+      }
+
+      function toggleBreedDetails(i, breedName) {
+        const detailBox = document.getElementById(`breed-details-${i}`)
+        detailBox.style.display =
+          detailBox.style.display === 'block' ? 'none' : 'block'
+      }
+
+      confirmBtn.onclick = () => {
+        if (!window._lastPrediction) return
+        saveFeedback({
+          action: 'confirm',
+          chosen: window._lastPrediction.top3[0].className,
+        })
+        status.innerText = `Confirmed: ${window._lastPrediction.top3[0].className}`
+      }
+
+      overrideBtn.onclick = () => {
+        overrideSelect.style.display = 'inline-block'
+        overrideSelect.onchange = () => {
+          saveFeedback({ action: 'override', chosen: overrideSelect.value })
+          status.innerText = `Overridden to: ${overrideSelect.value}`
+          overrideSelect.style.display = 'none'
+        }
+      }
+
+      function saveFeedback(entry) {
+        const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]')
+        data.push({ ...entry, ...window._lastPrediction })
+        localStorage.setItem(feedbackKey, JSON.stringify(data))
+      }
+
+      document.getElementById('downloadFeedback').onclick = () => {
+        const data = JSON.parse(localStorage.getItem(feedbackKey) || '[]')
+        if (!data.length) return alert('No feedback yet')
+        const rows = [
+          [
+            'time',
+            'action',
+            'chosen',
+            'top1',
+            'prob1',
+            'top2',
+            'prob2',
+            'top3',
+            'prob3',
+          ],
+        ]
+        data.forEach((e) => {
+          rows.push([
+            e.time,
+            e.action,
+            e.chosen,
+            e.top3[0].className,
+            (e.top3[0].probability * 100).toFixed(2),
+            e.top3[1]?.className,
+            (e.top3[1]?.probability * 100).toFixed(2),
+            e.top3[2]?.className,
+            (e.top3[2]?.probability * 100).toFixed(2),
+          ])
+        })
+        const csv = rows.map((r) => r.join(',')).join('\n')
+        const blob = new Blob([csv], { type: 'text/csv' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'feedback.csv'
+        a.click()
+        URL.revokeObjectURL(url)
+      }
+    </script>
+  </body>
 </html>
