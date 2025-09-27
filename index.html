@@ -400,110 +400,125 @@
     <div class="container">
       <!-- HOME -->
       <section id="home" class="section active">
-        <div style="text-align: center; padding: 40px 20px">
-          <h1 style="font-size: 2.5em; color: #1e90ff; margin-bottom: 16px">
+        <div
+          style="
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, #f0f8ff, #ffffff);
+            border-radius: 12px;
+          "
+        >
+          <h1
+            style="
+              font-size: 2.8em;
+              color: #10304a;
+              margin-bottom: 18px;
+              font-weight: 800;
+            "
+          >
             Smart Livestock Breed Identification
           </h1>
           <p
             style="
-              font-size: 1.2em;
-              color: #333;
+              font-size: 1.15em;
+              color: #444;
               max-width: 720px;
-              margin: 0 auto 24px;
+              margin: 0 auto 28px;
+              line-height: 1.6;
             "
           >
-            Harness the power of AI to identify cattle and buffalo breeds
-            instantly. Get expert advisory services, health management tools,
-            and comprehensive breed information.
+            Use AI to instantly identify cattle and buffalo breeds. Explore
+            expert advisory tools, health management insights, and reliable
+            breed information—all in one platform.
           </p>
           <div style="margin-bottom: 40px">
-            <button
-              onclick="switchTab('search')"
-              style="
-                padding: 12px 20px;
-                margin: 8px;
-                border: none;
-                border-radius: 8px;
-                background: #1e90ff;
-                color: white;
-                font-size: 16px;
-                font-weight: 700;
-                cursor: pointer;
-              "
-            >
-              Explore Breeds
+            <button onclick="switchTab('search')" class="primary">
+              🔍 Explore Breeds
             </button>
-
             <button
               onclick="switchTab('breed')"
-              style="
-                padding: 12px 20px;
-                margin: 8px;
-                border: none;
-                border-radius: 8px;
-                background: #27ae60;
-                color: white;
-                font-size: 16px;
-                font-weight: 700;
-                cursor: pointer;
-              "
+              class="primary"
+              style="background: #27ae60"
             >
-              Try AI Identification
+              🤖 Try AI Identification
             </button>
           </div>
+
+          <!-- Feature Highlights -->
           <div
             style="
               display: flex;
               flex-wrap: wrap;
               justify-content: center;
-              gap: 40px;
+              gap: 28px;
             "
           >
-            <div style="flex: 1 1 200px; max-width: 240px; text-align: center">
-              <div
-                style="
-                  width: 80px;
-                  height: 80px;
-                  margin: 0 auto 12px;
-                  border-radius: 50%;
-                  background: #1e90ff;
-                "
-              ></div>
-              <h3>AI-Powered</h3>
-              <p style="color: #555">
-                Advanced machine learning for accurate breed identification
+            <div
+              style="
+                flex: 1 1 220px;
+                max-width: 260px;
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+              "
+            >
+              <h3 style="color: #1e90ff; margin-bottom: 10px">⚡ AI-Powered</h3>
+              <p style="color: #555; font-size: 0.95em">
+                State-of-the-art machine learning for instant and reliable breed
+                recognition.
               </p>
             </div>
-            <div style="flex: 1 1 200px; max-width: 240px; text-align: center">
-              <div
-                style="
-                  width: 80px;
-                  height: 80px;
-                  margin: 0 auto 12px;
-                  border-radius: 50%;
-                  background: #27ae60;
-                "
-              ></div>
-              <h3>Expert Validated</h3>
-              <p style="color: #555">
-                All information verified by veterinary professionals
+            <div
+              style="
+                flex: 1 1 220px;
+                max-width: 260px;
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+              "
+            >
+              <h3 style="color: #27ae60; margin-bottom: 10px">
+                ✅ Expert Validated
+              </h3>
+              <p style="color: #555; font-size: 0.95em">
+                Every insight verified by veterinarians to ensure trust and
+                accuracy.
               </p>
             </div>
-            <div style="flex: 1 1 200px; max-width: 240px; text-align: center">
-              <div
-                style="
-                  width: 80px;
-                  height: 80px;
-                  margin: 0 auto 12px;
-                  border-radius: 50%;
-                  background: #1e90ff;
-                "
-              ></div>
-              <h3>Community Driven</h3>
-              <p style="color: #555">
-                Built for farmers, by agricultural technology experts
+            <div
+              style="
+                flex: 1 1 220px;
+                max-width: 260px;
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+              "
+            >
+              <h3 style="color: #1e90ff; margin-bottom: 10px">
+                🌱 Community Driven
+              </h3>
+              <p style="color: #555; font-size: 0.95em">
+                Built with farmer input to address real-world livestock
+                challenges.
               </p>
             </div>
+          </div>
+        </div>
+        <div style="margin-top: 50px">
+          <h2 style="text-align: center; color: #10304a">Latest Insights</h2>
+          <div
+            id="dynamicNews"
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+              gap: 20px;
+              margin-top: 20px;
+            "
+          >
+            <!-- Filled dynamically -->
           </div>
         </div>
       </section>
@@ -1051,6 +1066,34 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 
+    <script>
+      // Example dynamic content (can later fetch from API or DB)
+      const insights = [
+        {
+          title: 'AI in Dairy Farming',
+          text: 'AI models are transforming livestock management with higher accuracy in disease detection and breed classification.',
+        },
+        {
+          title: 'Breed Spotlight: Sahiwal',
+          text: 'Sahiwal cattle are heat-tolerant and ideal for tropical dairy farming, making them highly valued in South Asia.',
+        },
+        {
+          title: 'Farmer Success Stories',
+          text: 'Local farmers using Breed ID reported a 30% reduction in misclassification errors and improved breeding efficiency.',
+        },
+      ]
+
+      const newsContainer = document.getElementById('dynamicNews')
+      insights.forEach((item) => {
+        const card = document.createElement('div')
+        card.style.background = 'white'
+        card.style.padding = '16px'
+        card.style.borderRadius = '12px'
+        card.style.boxShadow = '0 4px 10px rgba(0,0,0,0.06)'
+        card.innerHTML = `<h3 style="color:#1e90ff; margin-bottom:8px;">${item.title}</h3><p style="color:#555; font-size:0.95em; line-height:1.5;">${item.text}</p>`
+        newsContainer.appendChild(card)
+      })
+    </script>
     <script>
       //after signup
       window.addEventListener('DOMContentLoaded', () => {
